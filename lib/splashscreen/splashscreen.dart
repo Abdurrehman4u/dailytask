@@ -1,4 +1,5 @@
-  import 'package:flutter/material.dart';
+  import 'package:dailytask/signupsignin/signup.dart';
+import 'package:flutter/material.dart';
 
   class Splashscreen extends StatelessWidget {
     const Splashscreen({super.key});
@@ -168,22 +169,17 @@
                   Column(children: [
                     Container(
                       height: 40,
-                      margin: const EdgeInsets.fromLTRB(20, 30, 0, 20),
+                      margin: const EdgeInsets.fromLTRB(10, 40, 0, 10),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                              return const Text(
-                                  "APP IS UNDER MAINTENANCE STAY TUNED :)");
-                            }),
-                          );
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const Signup()));
+
                         },
                         style: ButtonStyle(
                           backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.amber),
                           minimumSize: MaterialStateProperty.all<Size>(
-                            const Size(260, 40), // Set the minimum width and height
+                            const Size(360, 40), // Set the minimum width and height
                           ),
                         ),
                         child: const Text(

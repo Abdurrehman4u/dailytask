@@ -1,8 +1,8 @@
-import 'package:dailytask/signupsignin/signin.dart';
+import 'package:dailytask/signupsignin/signup.dart';
 import 'package:flutter/material.dart';
 
-class Signup extends StatelessWidget {
-  const Signup({super.key});
+class Signin extends StatelessWidget {
+  const Signin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,29 +36,14 @@ class Signup extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-              child: TextField(
-                decoration: InputDecoration(
-                  fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
-                  hintText: "Enter Username",
-                  filled: true,
-                  prefixIcon: Image.asset("assets/contact.png"),
-                  hintStyle: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.normal),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(3),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-            ),
+
             Container(
               margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
               child: TextField(
                 decoration: InputDecoration(
                   fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
                   hintText: "Enter Email",
+
                   filled: true,
                   prefixIcon: Image.asset("assets/user-profile.png"),
                   hintStyle: const TextStyle(
@@ -95,52 +80,41 @@ class Signup extends StatelessWidget {
 
               ),
             ),
-
-
-
             Container(
-              margin: const EdgeInsets.fromLTRB(25, 10, 10, 0),
+              margin: const EdgeInsets.fromLTRB(0, 0, 14,0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Checkbox(
-                    value: false,
-                    onChanged: (bool? newValue) {
-                      // Handle checkbox state change here
-                    },
-                  ),
-                  const Expanded(
-                    child: Text(
-                      "I have Read & Agreed to Daily Task Privacy Policy, Terms & Condition",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ),
+                  TextButton(onPressed: (){}, child: const Text("Forgot Password?",style: TextStyle(color:Color.fromRGBO(68, 90, 100, 1.0),fontWeight: FontWeight.bold )))
                 ],
               ),
             ),
+
+
+
             Container(
-              margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Add onPressed callback if needed
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
-                  ),
-                  backgroundColor: Colors.amber,
-                  minimumSize: const Size(310, 60),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Sign Up",
-                      style: TextStyle(color: Colors.black),
+                margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Add onPressed callback if needed
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Adjust the radius as needed
                     ),
-                  ],
-                ),
-              )
+                    backgroundColor: Colors.amber,
+                    minimumSize: const Size(310, 60),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Sign in",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                )
 
             ),
             Container(
@@ -187,22 +161,22 @@ class Signup extends StatelessWidget {
                 ),
               ),
             ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-            child:  Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Already have an account ?",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                  TextButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const Signin()));
+            Container(
+              margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
+              child:  Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't have an account?\t",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    TextButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const Signup()));
 
-                  }, child: const Text("Log in",style: TextStyle(color:Colors.amber,fontWeight: FontWeight.bold )))
+                    }, child: const Text("Sign up",style: TextStyle(color:Colors.amber,fontWeight: FontWeight.bold )))
 
-                ],
+                  ],
+                ),
               ),
-            ),
-          )
+            )
           ],
         ),
       ),
