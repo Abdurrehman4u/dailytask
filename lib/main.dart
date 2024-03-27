@@ -1,3 +1,4 @@
+import 'package:dailytask/signupsignin/signin.dart';
 import 'package:dailytask/signupsignin/signup.dart';
 import 'package:dailytask/splashscreen/splashscreen.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class Myapp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Splashscreen(),
+      home: Signup(),
       title: "DailyTask",
     );
   }

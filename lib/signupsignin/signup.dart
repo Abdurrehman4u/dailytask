@@ -1,15 +1,22 @@
 import 'package:dailytask/signupsignin/signin.dart';
 import 'package:flutter/material.dart';
 
-class Signup extends StatelessWidget {
+class Signup extends StatefulWidget {
   const Signup({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<Signup> createState() => _SignupState();
+
+}
+
+class _SignupState extends State<Signup> {
     TextEditingController usernameController = TextEditingController();
     TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-
+    TextEditingController passController = TextEditingController();
+    bool passwordHidden = true;
+    bool agreetoTerms = false;
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(32, 40, 50, 1.0),
       body: SingleChildScrollView(
@@ -81,17 +88,29 @@ class Signup extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-                child: TextField(
-                  controller: passwordController,
-                  obscureText: true,
+                child:  TextField(
+                  controller: passController,
+                  obscureText: passwordHidden, // Use passwordHidden here
                   decoration: InputDecoration(
                     fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
                     hintText: "Enter Password",
                     prefixIcon: Image.asset("assets/security.png"),
                     suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: Image.asset("assets/hide.png"),
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        passwordHidden
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toggle the state of passwordHidden variable
+                        setState(() {
+                          passwordHidden = !passwordHidden; // Toggle the state
+                        });
+                      },
                     ),
+
                     filled: true,
                     hintStyle: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.normal),
@@ -102,17 +121,20 @@ class Signup extends StatelessWidget {
                   ),
                 ),
               ),
+
+
               Container(
                 margin: const EdgeInsets.fromLTRB(25, 10, 10, 0),
-                child: Row(
+                child:  Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Checkbox(
-                      value: false,
-                      onChanged: (bool? newValue) {
-                        // Handle checkbox state change here
-                      },
-                    ),
+                    value: agreetoTerms,
+                    onChanged: (bool? newValue) {
+                      setState(() {
+                        agreetoTerms = !agreetoTerms;
+                      });
+                    }),
                     const Expanded(
                       child: Text(
                         "I have Read & Agreed to Daily Task Privacy Policy, Terms & Condition",
@@ -128,17 +150,17 @@ class Signup extends StatelessWidget {
                     onPressed: () {
                       // Add onPressed callback if needed
                       if (usernameController.text.isEmpty ||
-                          emailController.text.isEmpty ||
-                          passwordController.text.isEmpty) {
-
+                          emailController.text.isEmpty
+                      || passController.text.isEmpty || agreetoTerms == false
+                      )  {
                         // Show prompt if any field is empty
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text("Error",style: TextStyle(color: Colors.amber),),
-                              backgroundColor: Colors.deepPurple,
-                              content: const Text("Please fill all fields",style: TextStyle(color: Colors.amber),),
+                              backgroundColor: const Color.fromRGBO(68, 90, 100, 1.0),
+                              content:  const Text("please fill all fields",style: TextStyle(color: Colors.amber),),
                               actions: [
                                 TextButton(
                                   onPressed: () {

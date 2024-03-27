@@ -1,14 +1,19 @@
 import 'package:dailytask/signupsignin/signup.dart';
 import 'package:flutter/material.dart';
 
-class Signin extends StatelessWidget {
+class Signin extends StatefulWidget {
   const Signin({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<Signin> createState() => _SigninState();
+}
+
+class _SigninState extends State<Signin> {
+    bool showpass = false;
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(32, 40, 50, 1.0),
       body: SingleChildScrollView(
@@ -61,17 +66,29 @@ class Signin extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-                child: TextField(
+                child:  TextField(
                   controller: passwordController,
-                  obscureText: true,
+                  obscureText: showpass, // Use passwordHidden here
                   decoration: InputDecoration(
                     fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
                     hintText: "Enter Password",
                     prefixIcon: Image.asset("assets/security.png"),
                     suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: Image.asset("assets/hide.png"),
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        showpass
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toggle the state of passwordHidden variable
+                        setState(() {
+                          showpass = !showpass; // Toggle the state
+                        });
+                      },
                     ),
+
                     filled: true,
                     hintStyle: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.normal),
@@ -109,7 +126,7 @@ class Signin extends StatelessWidget {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text("Error",style: TextStyle(color: Colors.amber),),
-                              backgroundColor: Colors.deepPurple,
+                              backgroundColor: const Color.fromRGBO(68, 90, 100, 1.0),
                               content: const Text("Please fill all fields",style: TextStyle(color: Colors.amber),),
                               actions: [
                                 TextButton(
