@@ -77,8 +77,8 @@ class _SigninState extends State<Signin> {
                       icon: Icon(
                         // Based on passwordVisible state choose the icon
                         showpass
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         color: Theme.of(context).primaryColorDark,
                       ),
                       onPressed: () {
