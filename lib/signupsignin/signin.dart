@@ -1,4 +1,9 @@
+
+
+import 'package:dailytask/Firebase/FirebaseAuthservices.dart';
+import 'package:dailytask/HomeScreen/homescreen.dart';
 import 'package:dailytask/signupsignin/signup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Signin extends StatefulWidget {
@@ -9,9 +14,10 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
-    bool showpass = false;
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+  bool showpass = true;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +72,7 @@ class _SigninState extends State<Signin> {
               ),
               Container(
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
-                child:  TextField(
+                child: TextField(
                   controller: passwordController,
                   obscureText: showpass, // Use passwordHidden here
                   decoration: InputDecoration(
@@ -76,9 +82,7 @@ class _SigninState extends State<Signin> {
                     suffixIcon: IconButton(
                       icon: Icon(
                         // Based on passwordVisible state choose the icon
-                        showpass
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                        showpass ? Icons.visibility_off : Icons.visibility,
                         color: Theme.of(context).primaryColorDark,
                       ),
                       onPressed: () {
@@ -88,7 +92,6 @@ class _SigninState extends State<Signin> {
                         });
                       },
                     ),
-
                     filled: true,
                     hintStyle: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.normal),
@@ -125,15 +128,25 @@ class _SigninState extends State<Signin> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: const Text("Error",style: TextStyle(color: Colors.amber),),
-                              backgroundColor: const Color.fromRGBO(68, 90, 100, 1.0),
-                              content: const Text("Please fill all fields",style: TextStyle(color: Colors.amber),),
+                              title: const Text(
+                                "Error",
+                                style: TextStyle(color: Colors.amber),
+                              ),
+                              backgroundColor:
+                                  const Color.fromRGBO(68, 90, 100, 1.0),
+                              content: const Text(
+                                "Please fill all fields",
+                                style: TextStyle(color: Colors.amber),
+                              ),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: const Text("OK",style: TextStyle(color: Colors.amber),),
+                                  child: const Text(
+                                    "OK",
+                                    style: TextStyle(color: Colors.amber),
+                                  ),
                                 ),
                               ],
                             );
@@ -142,6 +155,7 @@ class _SigninState extends State<Signin> {
                       } else {
                         // All fields are filled, proceed with sign up
                         // Add your sign-up logic here
+                        Signin(context);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -237,6 +251,48 @@ class _SigninState extends State<Signin> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> Signin(BuildContext c) async {
+    String email = emailController.text;
+    String password = passwordController.text;
+    User? user = await FirebaseAuthservices()
+        .signInWithEmailAndPassword(email, password);
+    if (user != null) {
+      Navigator.push(c, MaterialPageRoute(builder: (c) => const Homescreen()));
+    } else {
+      showUserNotFoundDialog(c);
+    }
+  }
+
+  void showUserNotFoundDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor:
+            const Color.fromRGBO(68, 90, 100, 1.0),
+
+          title: const Text('User Not Found',
+
+              style:
+                  TextStyle(color: Colors.amber)),
+          content: const Text('Please sign in to continue.',
+              style:
+                  TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('OK',
+                  style: TextStyle(
+                      color: Colors.amber, fontWeight: FontWeight.bold)),
+            ),
+          ],
+        );
+      },
     );
   }
 }

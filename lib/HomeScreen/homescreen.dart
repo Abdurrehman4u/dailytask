@@ -1,8 +1,10 @@
+import 'package:dailytask/Firebase/FirebaseAuthservices.dart';
 import 'package:dailytask/HomeScreen/project.dart';
+import 'package:dailytask/signupsignin/signin.dart';
 import 'package:flutter/material.dart';
 
 class Homescreen extends StatefulWidget {
-  const Homescreen({super.key});
+  const Homescreen({Key? key}) : super(key: key);
 
   @override
   State<Homescreen> createState() => _HomescreenState();
@@ -36,52 +38,80 @@ class _HomescreenState extends State<Homescreen> {
                 ),
               ],
             ),
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Hello there",style: TextStyle(color: Colors.amber),),
-                        backgroundColor: const Color.fromRGBO(68, 90, 100, 1.0),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text("close me",style: TextStyle(color: Colors.amber),),
+            GestureDetector(
+
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text(
+                        "Hello there",
+                        style: TextStyle(color: Colors.amber),
+                      ),
+                      backgroundColor:
+                      const Color.fromRGBO(68, 90, 100, 1.0),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            "Close me",
+                            style: TextStyle(color: Colors.amber),
                           ),
-                        ],
-                      );
-                    },
-                  );
-                }, icon: Image.asset("assets/user-profile.png"))
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // Add your logout logic here
+                            // For example, you can navigate to the login screen
+                              FirebaseAuthservices().Signout();
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>const Signin()));
+                          },
+                          child: const Text(
+                            "Logout",
+                            style: TextStyle(color: Colors.amber),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Image.asset("assets/user-profile.png"),
+            )
           ],
         ),
       ),
       body: Column(
-        
         children: [
-          ListView.builder(itemCount: Project.Groupmembers.length,itemBuilder: (BuildContext context, int index) {
-            return Completed(context, Project.Groupmembers,Project.description[index]);
-          },)
+          Expanded(
+            child: ListView.builder(
+              itemCount: Project.Groupmembers.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Completed(
+                    context, Project.Groupmembers, Project.description[index]);
+              },
+            ),
+          )
         ],
       ),
-      
     );
-
-
   }
 
-  Widget Completed(BuildContext c,List<String> names ,Project p) {
+  Widget Completed(BuildContext c, List<String> names, Project p) {
     return GestureDetector(
-      onDoubleTap: (){
-        Navigator.push(c,MaterialPageRoute(builder: (c){
-          return const Text("chapak");
-        }));
+      onDoubleTap: () {
+        Navigator.push(
+          c,
+          MaterialPageRoute(
+            builder: (c) {
+              return const Text("chapak");
+            },
+          ),
+        );
       },
       child: Card(
-        // Remove const modifier
         elevation: 5,
         color: Colors.deepPurpleAccent,
         clipBehavior: Clip.antiAlias,
@@ -91,7 +121,7 @@ class _HomescreenState extends State<Homescreen> {
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               child: Column(
                 children: [
-                  Text(names[0])
+                  Text(names[0]),
                 ],
               ),
             ),
