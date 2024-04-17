@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class FirebaseAuthservices{
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   Future<User?> signUpWithEmailAndPassword(String email, String password) async {
 
@@ -33,7 +34,7 @@ class FirebaseAuthservices{
     return null;
 
   }
-  Future<void> Signout() async {
+  Future<void> signout() async {
     await FirebaseAuth.instance.signOut();
   }
 
@@ -41,5 +42,28 @@ class FirebaseAuthservices{
     FirebaseAuth auth = FirebaseAuth.instance;
     return auth.currentUser != null;
   }
+
+  Future<String?> getUsername() async {
+    User? user = _auth.currentUser;
+    String? email = user?.email;
+    String? username;
+    final docRef = _db.collection("users").doc(email);
+
+    final dataSnapshot = await docRef.get();
+
+    print(dataSnapshot.data);
+    if (dataSnapshot.data != null) {
+      var data = dataSnapshot.data() as Map<String, dynamic>;
+      var usern = data["username"];
+      username = usern;
+    } else {
+      print("Data snapshot is null.");
+    }
+
+    print('username: $username');
+    return username;
+  }
+
+
 
 }
