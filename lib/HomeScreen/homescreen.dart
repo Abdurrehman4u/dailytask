@@ -1,7 +1,10 @@
 import 'package:dailytask/Firebase/FirebaseAuthservices.dart';
-import 'package:dailytask/HomeScreen/project.dart';
+import 'package:dailytask/HomeScreen/create.dart';
+import 'package:dailytask/HomeScreen/sampledata.dart';
 import 'package:dailytask/signupsignin/signin.dart';
+import 'package:dailytask/utils/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -12,16 +15,32 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   int _selectedIndex = 0;
+  bool _isSearching = false;
+  void _toggleSearch(bool isSearching) {
+    setState(() {
+      _isSearching = isSearching;
+    });
+  }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if(_selectedIndex == 1){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Createtask()),
+        );
+      }else if(_selectedIndex == 2){
+
+      }else if(_selectedIndex == 3){
+
+      }
     });
   }
+
   bool isDark = true;
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color.fromRGBO(32, 40, 50, 1.0),
       appBar: AppBar(
@@ -78,11 +97,13 @@ class _HomescreenState extends State<Homescreen> {
                       backgroundColor: const Color.fromRGBO(68, 90, 100, 1.0),
                       actions: [
                         TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Icon(Icons.close_rounded,color:Colors.amber ,)
-                        ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Icon(
+                              Icons.close_rounded,
+                              color: Colors.amber,
+                            )),
                         TextButton(
                           onPressed: () {
                             // Add your logout logic here
@@ -109,46 +130,149 @@ class _HomescreenState extends State<Homescreen> {
         ),
       ),
       body: Column(
+      
         children: [
-          Column(
+          Row(
             children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 10, 20, 0) ,
-                child: SearchAnchor(
-                  builder: (BuildContext context, SearchController controller) {
-                    return SearchBar(
-                      controller: controller,
-                      onTap: () {
-                        // controller.openView();
-                      },
-                      onChanged: (_) {
-                        controller.openView();
-                      },
-                      leading: const Icon(Icons.search),
-                      padding: const MaterialStatePropertyAll<EdgeInsets>(
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Add margin
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.yellow), // Set background color to yellow
-                    );
-                  },
-                  suggestionsBuilder: (BuildContext context, SearchController controller) {
-                    return List<ListTile>.generate(0, (int index) {
-                      final String item = 'search something';
-                      return ListTile(
-                        title: Text(item),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                  child: SearchAnchor(
+                    builder:
+                        (BuildContext context, SearchController controller) {
+                      return SearchBar(
+      
+                        controller: controller,
                         onTap: () {
-                          setState(() {
-                            controller.closeView(item);
-                          });
+                          // controller.openView();
                         },
+                        onChanged: (_) {
+                          controller.openView();
+      
+                        },
+                        leading: const Icon(Icons.search),
+                        padding: const MaterialStatePropertyAll<EdgeInsets>(
+                          EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 8.0), // Add margin
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.yellow),
                       );
-                    });
-                  },
+                    },
+                    suggestionsBuilder:
+                        (BuildContext context, SearchController controller) {
+                      return List<ListTile>.generate(0, (int index) {
+                        const String item = 'search something';
+                        return ListTile(
+                          title: const Text(item),
+                          onTap: () {
+                            setState(() {
+                              controller.closeView(item);
+                            });
+                          },
+                        );
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                height: 40,
+                width: 40,
+                color: Colors.amber,
+                margin: const EdgeInsets.fromLTRB(0, 10, 10, 0),
+                child: IconButton(
+                  icon: const Icon(Icons.filter_alt_outlined),
+                  onPressed: () {},
                 ),
               ),
             ],
           ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Container(
+                margin: const EdgeInsets.fromLTRB(20, 30, 0, 10),
+                child: const Text(
+                  "Completed Tasks",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                )),
+            Container(
+                margin: const EdgeInsets.fromLTRB(20, 30, 0, 10),
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'See all',
+                    style: TextStyle(color: Colors.amber),
+                  ),
+                ))
+          ]),
+          Builder(builder: (BuildContext context){
+            if(sampleData.Tasksname.isEmpty){
+              return const Text("Yet to Complete a task",style: TextStyle(
+                color: Colors.amber,fontSize: 30,
+              ),);
+            }else{
+              return Expanded(
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0
+                  ),
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: sampleData.Tasksname.length,
+                      itemBuilder: (BuildContext context,int index){
+                        return completed(context, sampleData.Tasksname[index], sampleData.members[index], sampleData.percentage[index]);
+                      }
 
+                  ),
+                ),
+              );
+            }
+          }),
+      
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Container(
+                margin: const EdgeInsets.fromLTRB(20, 30, 0, 10),
+                child: const Text(
+                  "Ongoing Projects",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                )),
+            Container(
+                margin: const EdgeInsets.fromLTRB(20, 30, 0, 10),
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'See all',
+                    style: TextStyle(color: Colors.amber),
+                  ),
+                ))
+          ]),
+          Builder(builder: (BuildContext context){
+            if(sampleData.Tasksname.isEmpty){
+              return const Text("No task due",style: TextStyle(
+                color: Colors.amber,fontSize: 30,
+              ),);
+            }else{
+              return Expanded(
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0
+                  ),
+                  child: ListView.builder(
+                    itemCount: sampleData.Tasksname.length,
+                      itemBuilder: (BuildContext context,int index){
+                        return onGoing(context, sampleData.Tasksname[index], sampleData.members[index], sampleData.percentage[index], sampleData.Duedate[index]);
+                      }
+
+                  ),
+                ),
+              );
+            }
+          }),
+      
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -163,16 +287,20 @@ class _HomescreenState extends State<Homescreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.create_new_folder_outlined),
             label: 'create',
+            backgroundColor: Color.fromRGBO(38, 50, 56, 49),
+
             // backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
             label: 'calender',
+            backgroundColor: Color.fromRGBO(38, 50, 56, 49),
             // backgroundColor: Colors.purple,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications_none_outlined),
-            label: 'Settings',
+            label: 'notifications',
+            backgroundColor: Color.fromRGBO(38, 50, 56, 49),
             // backgroundColor: Colors.pink,
           ),
         ],
@@ -183,35 +311,4 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 
-  Widget completed(BuildContext c, List<String> names, Project p) {
-    return GestureDetector(
-      onDoubleTap: () {
-        Navigator.push(
-          c,
-          MaterialPageRoute(
-            builder: (c) {
-              return const Text("chapak");
-            },
-          ),
-        );
-      },
-      child: Card(
-        elevation: 5,
-        color: Colors.deepPurpleAccent,
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              child: Column(
-                children: [
-                  Text(names[0]),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

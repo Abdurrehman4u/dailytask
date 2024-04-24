@@ -56,6 +56,8 @@ class _SignupState extends State<Signup> {
               Container(
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                 child: TextField(
+                  style: const TextStyle(color: Colors.white),
+
                   controller: usernameController,
                   decoration: InputDecoration(
                     fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
@@ -74,6 +76,8 @@ class _SignupState extends State<Signup> {
               Container(
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                 child: TextField(
+                  style: const TextStyle(color: Colors.white),
+
                   controller: emailController,
                   decoration: InputDecoration(
                     fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
@@ -92,6 +96,8 @@ class _SignupState extends State<Signup> {
               Container(
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                 child: TextField(
+                  style: const TextStyle(color: Colors.white),
+
                   controller: passController,
                   obscureText: passwordHidden, // Use passwordHidden here
                   decoration: InputDecoration(

@@ -55,6 +55,8 @@ class _SigninState extends State<Signin> {
               Container(
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                 child: TextField(
+                  style: const TextStyle(color: Colors.white),
+
                   controller: emailController,
                   decoration: InputDecoration(
                     fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
@@ -73,6 +75,8 @@ class _SigninState extends State<Signin> {
               Container(
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                 child: TextField(
+                  style: const TextStyle(color: Colors.white),
+
                   controller: passwordController,
                   obscureText: showpass, // Use passwordHidden here
                   decoration: InputDecoration(
