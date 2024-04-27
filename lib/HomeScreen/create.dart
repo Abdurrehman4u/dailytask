@@ -10,6 +10,9 @@ class Createtask extends StatefulWidget {
 class _CreatetaskState extends State<Createtask> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
+  List<String> tasks = [];
+  String? taskname;
+  TextEditingController _taskController = TextEditingController();
 
   // Function to show Date Picker
   Future<void> _selectDate(BuildContext context) async {
@@ -103,6 +106,7 @@ class _CreatetaskState extends State<Createtask> {
                 ),
               ],
             ),
+
             Container(
               margin: const EdgeInsets.fromLTRB(30, 20, 30, 40),
               child: SingleChildScrollView(
@@ -124,6 +128,92 @@ class _CreatetaskState extends State<Createtask> {
                 ),
               ),
             ),
+
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.fromLTRB(30, 10, 0, 10),
+                  child: const Text(
+                    'Add Tasks',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(30, 20, 30, 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          style: const TextStyle(color: Colors.white),
+                          controller: _taskController,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
+                            filled: true,
+                            hintStyle: const TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.normal),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(3),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                10), // Adjust the radius as needed
+                          ),
+                          backgroundColor: Colors.amber,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            taskname = _taskController.text.toString();
+                            tasks.add(_taskController.text);
+                            _taskController.clear();
+                          });
+                        },
+                        child: const Text('Add',style: TextStyle(color: Colors.black),),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  ListView.builder(
+                    shrinkWrap: true, // Add this line
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        textColor: Colors.black,
+                        tileColor: Colors.amberAccent,
+                        title: Text(tasks[index]),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.clear_outlined,color: Colors.pink,),
+                          onPressed: () {
+                            setState(() {
+                              tasks.removeAt(index);
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+
+
+
+
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -302,5 +392,10 @@ class _CreatetaskState extends State<Createtask> {
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    _taskController.dispose();
+    super.dispose();
   }
 }

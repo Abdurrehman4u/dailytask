@@ -1,4 +1,5 @@
 import 'package:dailytask/Firebase/FirebaseAuthservices.dart';
+import 'package:dailytask/HomeScreen/calender.dart';
 import 'package:dailytask/HomeScreen/create.dart';
 import 'package:dailytask/HomeScreen/sampledata.dart';
 import 'package:dailytask/signupsignin/signin.dart';
@@ -31,6 +32,10 @@ class _HomescreenState extends State<Homescreen> {
           MaterialPageRoute(builder: (context) => const Createtask()),
         );
       }else if(_selectedIndex == 2){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>   Calender()),
+        );
 
       }else if(_selectedIndex == 3){
 
