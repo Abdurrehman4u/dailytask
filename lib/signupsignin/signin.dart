@@ -5,6 +5,7 @@ import 'package:dailytask/HomeScreen/homescreen.dart';
 import 'package:dailytask/signupsignin/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -58,6 +59,9 @@ class _SigninState extends State<Signin> {
                   style: const TextStyle(color: Colors.white),
 
                   controller: emailController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(RegExp(r"\s")), // Disallow whitespace
+                  ],
                   decoration: InputDecoration(
                     fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
                     hintText: "Enter Email",
@@ -238,7 +242,7 @@ class _SigninState extends State<Signin> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const Signup()));
@@ -264,7 +268,7 @@ class _SigninState extends State<Signin> {
     User? user = await FirebaseAuthservices()
         .signInWithEmailAndPassword(email, password);
     if (user != null) {
-      Navigator.push(c, MaterialPageRoute(builder: (c) => const Homescreen()));
+      Navigator.pushReplacement(c, MaterialPageRoute(builder: (c) => const Homescreen()));
     } else {
       showUserNotFoundDialog(c);
     }

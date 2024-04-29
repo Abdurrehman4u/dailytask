@@ -49,7 +49,7 @@ class _CreatetaskState extends State<Createtask> {
   @override
   Widget build(BuildContext context) {
     double maxWidth =
-        MediaQuery.of(context).size.width * 0.9; // Maximum width for the chips container
+        MediaQuery.of(context).size.width * 1.1; // Maximum width for the chips container
     int maxChipsPerRow =
     3; // Maximum number of chips per row
     double chipWidth = maxWidth / maxChipsPerRow;

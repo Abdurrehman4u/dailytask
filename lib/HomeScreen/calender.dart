@@ -15,11 +15,9 @@ class _CalenderState extends State<Calender> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-
-  @override
-  Widget build(BuildContext context) {
-    int _selectedIndex = 0;
+  int _selectedIndex = 0;
     void _onItemTapped(int index) {
+      _selectedIndex = index;
       setState(() {
         _selectedIndex = index;
         if (_selectedIndex == 1) {
@@ -35,6 +33,10 @@ class _CalenderState extends State<Calender> {
         } else if (_selectedIndex == 3) {}
       });
     }
+
+  @override
+  Widget build(BuildContext context) {
+
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(32, 40, 50, 1.0),

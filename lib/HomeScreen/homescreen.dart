@@ -34,7 +34,7 @@ class _HomescreenState extends State<Homescreen> {
       }else if(_selectedIndex == 2){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>   Calender()),
+          MaterialPageRoute(builder: (context) =>   const Calender()),
         );
 
       }else if(_selectedIndex == 3){
@@ -47,6 +47,7 @@ class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromRGBO(32, 40, 50, 1.0),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -114,10 +115,11 @@ class _HomescreenState extends State<Homescreen> {
                             // Add your logout logic here
                             // For example, you can navigate to the login screen
                             FirebaseAuthservices().signout();
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const Signin()));
+
                           },
                           child: const Text(
                             "Logout",
@@ -135,7 +137,7 @@ class _HomescreenState extends State<Homescreen> {
         ),
       ),
       body: Column(
-      
+
         children: [
           Row(
             children: [
@@ -146,14 +148,14 @@ class _HomescreenState extends State<Homescreen> {
                     builder:
                         (BuildContext context, SearchController controller) {
                       return SearchBar(
-      
+
                         controller: controller,
                         onTap: () {
                           // controller.openView();
                         },
                         onChanged: (_) {
                           controller.openView();
-      
+
                         },
                         leading: const Icon(Icons.search),
                         padding: const MaterialStatePropertyAll<EdgeInsets>(
@@ -235,7 +237,7 @@ class _HomescreenState extends State<Homescreen> {
               );
             }
           }),
-      
+
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Container(
                 margin: const EdgeInsets.fromLTRB(20, 30, 0, 10),
@@ -277,7 +279,7 @@ class _HomescreenState extends State<Homescreen> {
               );
             }
           }),
-      
+
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

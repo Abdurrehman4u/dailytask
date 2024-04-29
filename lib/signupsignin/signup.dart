@@ -4,6 +4,7 @@ import 'package:dailytask/HomeScreen/homescreen.dart';
 import 'package:dailytask/signupsignin/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -79,6 +80,9 @@ class _SignupState extends State<Signup> {
                   style: const TextStyle(color: Colors.white),
 
                   controller: emailController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(RegExp(r"\s")), // Disallow whitespace
+                  ],
                   decoration: InputDecoration(
                     fillColor: const Color.fromRGBO(68, 90, 100, 1.0),
                     hintText: "Enter Email",
@@ -97,7 +101,9 @@ class _SignupState extends State<Signup> {
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                 child: TextField(
                   style: const TextStyle(color: Colors.white),
-
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(RegExp(r"\s")), // Disallow whitespace
+                  ],
                   controller: passController,
                   obscureText: passwordHidden, // Use passwordHidden here
                   decoration: InputDecoration(
@@ -270,7 +276,7 @@ class _SignupState extends State<Signup> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const Signin()));
@@ -308,7 +314,7 @@ class _SignupState extends State<Signup> {
   }
 
   void navigatetohomescreen() {
-    Navigator.push(
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const Homescreen()));
   }
 
