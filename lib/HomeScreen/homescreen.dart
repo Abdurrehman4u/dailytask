@@ -5,7 +5,6 @@ import 'package:dailytask/HomeScreen/sampledata.dart';
 import 'package:dailytask/signupsignin/signin.dart';
 import 'package:dailytask/utils/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -16,12 +15,6 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   int _selectedIndex = 0;
-  bool _isSearching = false;
-  void _toggleSearch(bool isSearching) {
-    setState(() {
-      _isSearching = isSearching;
-    });
-  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -112,8 +105,6 @@ class _HomescreenState extends State<Homescreen> {
                             )),
                         TextButton(
                           onPressed: () {
-                            // Add your logout logic here
-                            // For example, you can navigate to the login screen
                             FirebaseAuthservices().signout();
                             Navigator.pushReplacement(
                                 context,
@@ -158,11 +149,11 @@ class _HomescreenState extends State<Homescreen> {
 
                         },
                         leading: const Icon(Icons.search),
-                        padding: const MaterialStatePropertyAll<EdgeInsets>(
+                        padding: const WidgetStatePropertyAll<EdgeInsets>(
                           EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 8.0), // Add margin
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
+                        backgroundColor: WidgetStateProperty.all<Color>(
                             Colors.yellow),
                       );
                     },

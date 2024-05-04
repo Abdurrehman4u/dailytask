@@ -1,6 +1,5 @@
 import 'package:dailytask/HomeScreen/create.dart';
 import 'package:dailytask/HomeScreen/homescreen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -12,32 +11,30 @@ class Calender extends StatefulWidget {
 }
 
 class _CalenderState extends State<Calender> {
-  CalendarFormat _calendarFormat = CalendarFormat.week;
+  final CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   int _selectedIndex = 0;
-    void _onItemTapped(int index) {
+  void _onItemTapped(int index) {
+    _selectedIndex = index;
+    setState(() {
       _selectedIndex = index;
-      setState(() {
-        _selectedIndex = index;
-        if (_selectedIndex == 1) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Createtask()),
-          );
-        } else if (_selectedIndex == 0) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Homescreen()),
-          );
-        } else if (_selectedIndex == 3) {}
-      });
-    }
+      if (_selectedIndex == 1) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Createtask()),
+        );
+      } else if (_selectedIndex == 0) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Homescreen()),
+        );
+      } else if (_selectedIndex == 3) {}
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: const Color.fromRGBO(32, 40, 50, 1.0),
       appBar: AppBar(
@@ -48,7 +45,6 @@ class _CalenderState extends State<Calender> {
       body: Column(
         children: [
           TableCalendar(
-
             firstDay: DateTime(2022),
             lastDay: DateTime(DateTime.now().year + 10),
             focusedDay: _focusedDay,
@@ -69,12 +65,10 @@ class _CalenderState extends State<Calender> {
               defaultTextStyle: TextStyle(color: Colors.white),
               weekendTextStyle: TextStyle(color: Colors.white),
               outsideDaysVisible: true,
-todayTextStyle: TextStyle(color: Colors.pinkAccent),
+              todayTextStyle: TextStyle(color: Colors.pinkAccent),
               todayDecoration: BoxDecoration(
-
                 color: Colors.transparent,
                 shape: BoxShape.rectangle,
-
               ),
               selectedTextStyle: TextStyle(backgroundColor: Colors.amber),
               selectedDecoration: BoxDecoration(
@@ -82,8 +76,6 @@ todayTextStyle: TextStyle(color: Colors.pinkAccent),
                 shape: BoxShape.rectangle,
               ),
             ),
-
-
             onDaySelected: (selectedDay, focusedDay) {
               if (!isSameDay(_selectedDay, selectedDay)) {
                 setState(() {
@@ -98,6 +90,23 @@ todayTextStyle: TextStyle(color: Colors.pinkAccent),
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                  margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: const Text(
+                    "Todays Task",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30),
+                  )),
+            ],
           ),
         ],
       ),

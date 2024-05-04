@@ -1,3 +1,4 @@
+import 'package:dailytask/HomeScreen/taskdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -9,7 +10,7 @@ Widget completed(BuildContext c, String task, String names, int percentage) {
         c,
         MaterialPageRoute(
           builder: (c) {
-            return const Text("chapak");
+            return const Taskdetails();
           },
         ),
       );
@@ -93,14 +94,14 @@ Widget completed(BuildContext c, String task, String names, int percentage) {
 }
 
 Widget onGoing(
-    BuildContext c, String Task, String team, int percent, String date) {
+    BuildContext c, String task, String team, int percent, String date) {
   return GestureDetector(
     onTap: (){
       Navigator.push(
         c,
         MaterialPageRoute(
           builder: (c) {
-            return const Text("chapak");
+            return const Taskdetails();
           },
         ),
       );
@@ -118,7 +119,7 @@ Widget onGoing(
               alignment: AlignmentDirectional.topStart,
               margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
               child: Text(
-                Task,
+                task,
                 style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -177,4 +178,8 @@ Widget onGoing(
       ),
     ),
   );
+
+
 }
+
+

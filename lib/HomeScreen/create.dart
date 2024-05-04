@@ -12,7 +12,7 @@ class _CreatetaskState extends State<Createtask> {
   TimeOfDay selectedTime = TimeOfDay.now();
   List<String> tasks = [];
   String? taskname;
-  TextEditingController _taskController = TextEditingController();
+  final TextEditingController _taskController = TextEditingController();
 
   // Function to show Date Picker
   Future<void> _selectDate(BuildContext context) async {
@@ -43,7 +43,7 @@ class _CreatetaskState extends State<Createtask> {
   }
 
   TextEditingController title = TextEditingController();
-  TextEditingController Detail = TextEditingController();
+  TextEditingController detail = TextEditingController();
   List<Widget> chips = [];
 
   @override
@@ -112,7 +112,7 @@ class _CreatetaskState extends State<Createtask> {
               child: SingleChildScrollView(
                 child: TextField(
                   style: const TextStyle(color: Colors.white),
-                  controller: Detail,
+                  controller: detail,
                   cursorColor: Colors.white,
                   maxLines: 5,
                   decoration: InputDecoration(
@@ -239,10 +239,10 @@ class _CreatetaskState extends State<Createtask> {
                   ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all(Colors.amber[300]),
-                      fixedSize: MaterialStateProperty.all(
+                      WidgetStateProperty.all(Colors.amber[300]),
+                      fixedSize: WidgetStateProperty.all(
                           const Size.fromHeight(50)),
-                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                      shape: WidgetStateProperty.all<OutlinedBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(2),
                         ),
@@ -310,9 +310,9 @@ class _CreatetaskState extends State<Createtask> {
                       ),
                       ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-                          fixedSize: MaterialStateProperty.all(const Size.fromHeight(50)),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                          backgroundColor: WidgetStateProperty.all(Colors.blueGrey),
+                          fixedSize: WidgetStateProperty.all(const Size.fromHeight(50)),
+                          shape: WidgetStateProperty.all<OutlinedBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(2),
                             ),
@@ -341,9 +341,9 @@ class _CreatetaskState extends State<Createtask> {
                       ),
                       ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-                          fixedSize: MaterialStateProperty.all(const Size.fromHeight(50)),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                          backgroundColor: WidgetStateProperty.all(Colors.blueGrey),
+                          fixedSize: WidgetStateProperty.all(const Size.fromHeight(50)),
+                          shape: WidgetStateProperty.all<OutlinedBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(2),
                             ),
