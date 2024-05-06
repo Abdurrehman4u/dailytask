@@ -1,16 +1,17 @@
+import 'package:dailytask/HomeScreen/sampledata.dart';
 import 'package:dailytask/HomeScreen/taskdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-Widget completed(BuildContext c, String task, String names, int percentage) {
+Widget completed(BuildContext c, sampleData data) {
   return GestureDetector(
     onTap: () {
       Navigator.push(
         c,
         MaterialPageRoute(
           builder: (c) {
-            return const Taskdetails();
+            return  Taskdetails(data: data,);
           },
         ),
       );
@@ -32,7 +33,7 @@ Widget completed(BuildContext c, String task, String names, int percentage) {
                   Container(
                     margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: Text(
-                      task,
+                     data.Tasksname ,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -61,7 +62,8 @@ Widget completed(BuildContext c, String task, String names, int percentage) {
                           "Completed",
                           style: TextStyle(color: Colors.white),
                         ),
-                        Text("$percentage%")
+                        Text("${data.getPercentage()}%")
+
                       ],
                     ),
                   ),
@@ -75,7 +77,7 @@ Widget completed(BuildContext c, String task, String names, int percentage) {
                           width: containerWidth *
                               0.8, // Adjust the width of the progress bar based on the Card's width
                           lineHeight: 14.0,
-                          percent: percentage /
+                          percent: data.getPercentage() /
                               100, // Convert percentage to a value between 0 and 1
                           backgroundColor: Colors.white,
                           progressColor: Colors.blue,
@@ -93,15 +95,14 @@ Widget completed(BuildContext c, String task, String names, int percentage) {
   );
 }
 
-Widget onGoing(
-    BuildContext c, String task, String team, int percent, String date) {
+Widget onGoing(BuildContext c, sampleData data) {
   return GestureDetector(
     onTap: (){
       Navigator.push(
         c,
         MaterialPageRoute(
           builder: (c) {
-            return const Taskdetails();
+            return  Taskdetails(data: data,);
           },
         ),
       );
@@ -119,7 +120,7 @@ Widget onGoing(
               alignment: AlignmentDirectional.topStart,
               margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
               child: Text(
-                task,
+                data.Tasksname,
                 style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -154,7 +155,7 @@ Widget onGoing(
                           alignment: AlignmentDirectional.bottomStart,
                           margin: const EdgeInsets.fromLTRB(7, 10, 0, 2),
                           child: Text(
-                            date,
+                            data.Duedate,
                             style: const TextStyle(color: Colors.white),
                           ))
                     ],
@@ -164,9 +165,9 @@ Widget onGoing(
                     child: CircularPercentIndicator(
                       radius: 30.0,
                       lineWidth: 7.0,
-                      percent: percent /
+                      percent: data.getPercentage() /
                           100,
-                      center: Text(percent.toString()),
+                      center: Text(data.getPercentage().toString()),
                       progressColor: Colors.amber[300],
                     ),
                   )

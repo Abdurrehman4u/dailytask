@@ -15,6 +15,8 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   int _selectedIndex = 0;
+  List<int> completeCount = [];
+  List<int> notcompleteCount = [];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -206,28 +208,35 @@ class _HomescreenState extends State<Homescreen> {
                   ),
                 ))
           ]),
-          Builder(builder: (BuildContext context){
-            if(sampleData.Tasksname.isEmpty){
-              return const Text("Yet to Complete a task",style: TextStyle(
-                color: Colors.amber,fontSize: 30,
-              ),);
-            }else{
-              return Expanded(
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0
-                  ),
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: sampleData.Tasksname.length,
-                      itemBuilder: (BuildContext context,int index){
-                        return completed(context, sampleData.Tasksname[index], sampleData.members[index], sampleData.percentage[index]);
-                      }
+          SizedBox(
+            height: 200,
+            child: Builder(builder: (BuildContext context){
+                getCompletedCount();
+              if(completeCount.isEmpty){
+                return const Text("Yet to Complete a task",style: TextStyle(
+                  color: Colors.amber,fontSize: 30,
+                ),);
+              }else{
 
+                return Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0
+                    ),
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: completeCount.length,
+                        itemBuilder: (BuildContext context,int index){
+
+                          return completed(context, sampleData.dataCard[completeCount[index]]);
+                        }
+
+                    ),
                   ),
-                ),
-              );
-            }
-          }),
+                );
+              }
+
+            }),
+          ),
 
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Container(
@@ -250,7 +259,8 @@ class _HomescreenState extends State<Homescreen> {
                 ))
           ]),
           Builder(builder: (BuildContext context){
-            if(sampleData.Tasksname.isEmpty){
+            getNotCompleteCount();
+            if(notcompleteCount.isEmpty){
               return const Text("No task due",style: TextStyle(
                 color: Colors.amber,fontSize: 30,
               ),);
@@ -260,9 +270,9 @@ class _HomescreenState extends State<Homescreen> {
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 0
                   ),
                   child: ListView.builder(
-                    itemCount: sampleData.Tasksname.length,
+                    itemCount: sampleData.dataCard.length,
                       itemBuilder: (BuildContext context,int index){
-                        return onGoing(context, sampleData.Tasksname[index], sampleData.members[index], sampleData.percentage[index], sampleData.Duedate[index]);
+                        return onGoing(context, sampleData.dataCard[index]);
                       }
 
                   ),
@@ -309,4 +319,22 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 
+  List<int> getCompletedCount(){
+    for (var i = 0; i < sampleData.dataCard.length; i++ ){
+      if(sampleData.dataCard[i].getPercentage()==100){
+        completeCount.add(i);
+      }
+    }
+
+    return completeCount;
+  }
+  List<int> getNotCompleteCount(){
+    for(var i=0;i<sampleData.dataCard.length;i++){
+      if(sampleData.dataCard[i].getPercentage()<100){
+        notcompleteCount.add(i);
+      }
+    }
+
+    return notcompleteCount;
+  }
 }
