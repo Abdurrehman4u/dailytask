@@ -1,8 +1,10 @@
 import 'package:dailytask/HomeScreen/create.dart';
 import 'package:dailytask/HomeScreen/homescreen.dart';
+import 'package:dailytask/HomeScreen/sampledata.dart';
+import 'package:dailytask/utils/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-
+import 'package:intl/intl.dart';
 class Calender extends StatefulWidget {
   const Calender({super.key});
 
@@ -14,23 +16,17 @@ class _CalenderState extends State<Calender> {
   final CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  int _selectedIndex = 0;
-  void _onItemTapped(int index) {
-    _selectedIndex = index;
-    setState(() {
-      _selectedIndex = index;
-      if (_selectedIndex == 1) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Createtask()),
-        );
-      } else if (_selectedIndex == 0) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Homescreen()),
-        );
-      } else if (_selectedIndex == 3) {}
-    });
+  int _selectedIndex = 2;
+  String sDate = DateFormat('dd MMMM yyyy').format(DateTime.now());
+  List<sampleData> datalist = [];
+  List<int> dataIndex =[];
+  List<DateTime> tasksdates= [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData(sDate);
   }
 
   @override
@@ -81,7 +77,9 @@ class _CalenderState extends State<Calender> {
                 setState(() {
                   _selectedDay = selectedDay;
                   _focusedDay = selectedDay;
+                  sDate = formatDate(_focusedDay);
                 });
+
               }
             },
             selectedDayPredicate: (day) {
@@ -107,15 +105,39 @@ class _CalenderState extends State<Calender> {
                         fontSize: 30),
                   )),
             ],
+
           ),
+          Expanded(child: Builder(
+            builder: (context) {
+              getData(sDate);
+              if(datalist.isEmpty){
+                return const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("No Task today",style: TextStyle(color: Colors.amber),),
+                  ],
+                );
+              }else{
+
+              return ListView.builder(
+                  itemCount: datalist.length,
+                  itemBuilder: (BuildContext context,int index){
+                    return completed(context, datalist[index], dataIndex[index]);
+                  });
+              }
+            }
+          ))
+
+
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromRGBO(38, 50, 56, 49),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            backgroundColor: Color.fromRGBO(38, 50, 56, 49),
-            icon: Icon(Icons.home_outlined),
+            icon: Icon(Icons.home_outlined,),
             label: 'Home',
+            backgroundColor: Color.fromRGBO(38, 50, 56, 49),
 
             // backgroundColor: Colors.red,
           ),
@@ -132,17 +154,46 @@ class _CalenderState extends State<Calender> {
             backgroundColor: Color.fromRGBO(38, 50, 56, 49),
             // backgroundColor: Colors.purple,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none_outlined),
-            label: 'notifications',
-            backgroundColor: Color.fromRGBO(38, 50, 56, 49),
-            // backgroundColor: Colors.pink,
-          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
     );
+  }
+  void _onItemTapped(int index) {
+    _selectedIndex = index;
+    setState(() {
+      _selectedIndex = index;
+      if (_selectedIndex == 1) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Createtask()),
+        );
+      } else if (_selectedIndex == 0) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Homescreen()),
+        );
+      }
+    });
+  }
+
+  String formatDate(DateTime selectedDate) {
+    String formattedDate = DateFormat('dd MMMM yyyy').format(selectedDate);
+
+    return formattedDate;
+  }
+
+  void getData(String date){
+    datalist.clear();
+    dataIndex.clear();
+    int len = sampleData.dataCard.length;
+    for(int i = 0;i<len;i++){
+      if(sampleData.dataCard[i].Duedate == sDate){
+        datalist.add(sampleData.dataCard[i]);
+        dataIndex.add(i);
+      }
+    }
   }
 }

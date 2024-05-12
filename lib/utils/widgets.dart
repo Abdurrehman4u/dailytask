@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-Widget completed(BuildContext c, sampleData data) {
+Widget completed(BuildContext c, sampleData data,int index) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(
+      Navigator.pushReplacement(
         c,
         MaterialPageRoute(
           builder: (c) {
-            return  Taskdetails(data: data,);
+            return  Taskdetails(data: data,index: index,);
           },
         ),
       );
     },
     child: SizedBox(
-      width: 250, // Specify the desired width
-      height: 210, // Specify the desired height
+      width: 250,
+      height: 210,
       child: Card(
         elevation: 5,
         color: const Color.fromRGBO(69, 90, 100, 10),
@@ -74,13 +74,12 @@ Widget completed(BuildContext c, sampleData data) {
                         double containerWidth =
                             constraints.maxWidth; // Get the width of the Card
                         return LinearPercentIndicator(
-                          width: containerWidth *
-                              0.8, // Adjust the width of the progress bar based on the Card's width
+                          width: containerWidth, // Adjust the width of the progress bar based on the Card's width
                           lineHeight: 14.0,
                           percent: data.getPercentage() /
                               100, // Convert percentage to a value between 0 and 1
                           backgroundColor: Colors.white,
-                          progressColor: Colors.blue,
+                          progressColor: Colors.amber,
                         );
                       },
                     ),
@@ -95,14 +94,14 @@ Widget completed(BuildContext c, sampleData data) {
   );
 }
 
-Widget onGoing(BuildContext c, sampleData data) {
+Widget onGoing(BuildContext c, sampleData data,int index) {
   return GestureDetector(
     onTap: (){
-      Navigator.push(
+      Navigator.pushReplacement(
         c,
         MaterialPageRoute(
           builder: (c) {
-            return  Taskdetails(data: data,);
+            return  Taskdetails(data: data,index: index,);
           },
         ),
       );
@@ -182,5 +181,6 @@ Widget onGoing(BuildContext c, sampleData data) {
 
 
 }
+
 
 

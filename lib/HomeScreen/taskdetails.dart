@@ -1,3 +1,4 @@
+import 'package:dailytask/HomeScreen/edittask.dart';
 import 'package:dailytask/HomeScreen/homescreen.dart';
 import 'package:dailytask/HomeScreen/sampledata.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +7,10 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class Taskdetails extends StatefulWidget {
   final sampleData data;
+  final int index;
   const Taskdetails(
 
-      {super.key,required this.data}
+      {super.key,required this.data,required this.index}
       );
 
   @override
@@ -28,12 +30,23 @@ class _TaskdetailsState extends State<Taskdetails> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.amber),
         backgroundColor: const Color.fromRGBO(32, 40, 50, 1.0),
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        title:  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Task Detail', style: TextStyle(color: Colors.white))
+            IconButton(onPressed: (){
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const Homescreen()));
+
+            }, icon: const Icon(Icons.arrow_back,color: Colors.amber,)),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.6,
+                child: const Center(child: Text('Task Detail', style: TextStyle(color: Colors.white)))),
+            IconButton(onPressed: (){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>EditTask(data: widget.data,index:widget.index)));
+            }, icon: const Icon(Icons.edit_note_outlined,color: Colors.amber,))
+
           ],
         ),
+
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -197,52 +210,54 @@ class _TaskdetailsState extends State<Taskdetails> {
                   margin: const EdgeInsets.fromLTRB(30, 30, 30, 30),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                        return const Homescreen();
-                      }));
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (BuildContext context) {
-                      //     return AlertDialog(
-                      //       title: const Text(
-                      //         "Enter task Name",
-                      //         style: TextStyle(color: Colors.amber),
-                      //       ),
-                      //       backgroundColor:
-                      //           const Color.fromRGBO(68, 90, 100, 1.0),
-                      //       content: TextField(
-                      //         style: const TextStyle(color: Colors.white),
-                      //         cursorColor: Colors.white,
-                      //         controller: taskname,
-                      //         decoration: InputDecoration(
-                      //           fillColor:
-                      //               const Color.fromRGBO(32, 40, 50, 1.0),
-                      //           hintText: "Enter Task Name",
-                      //           filled: true,
-                      //           hintStyle: const TextStyle(
-                      //             color: Colors.white,
-                      //             fontWeight: FontWeight.normal,
-                      //           ),
-                      //           border: OutlineInputBorder(
-                      //             borderRadius: BorderRadius.circular(3),
-                      //             borderSide: BorderSide.none,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       actions: [
-                      //         TextButton(
-                      //           onPressed: () {
-                      //             Navigator.of(context).pop();
-                      //           },
-                      //           child: const Text(
-                      //             "add Task",
-                      //             style: TextStyle(color: Colors.amber),
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     );
-                      //   },
-                      // );
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text(
+                              "Enter task Name",
+                              style: TextStyle(color: Colors.amber),
+                            ),
+                            backgroundColor:
+                                const Color.fromRGBO(68, 90, 100, 1.0),
+                            content: TextField(
+                              style: const TextStyle(color: Colors.white),
+                              cursorColor: Colors.white,
+                              controller: taskname,
+                              decoration: InputDecoration(
+                                fillColor:
+                                    const Color.fromRGBO(32, 40, 50, 1.0),
+                                hintText: "Enter Task Name",
+                                filled: true,
+                                hintStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(3),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                  widget.data.addTask(taskname.text);
+
+                                  });
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  "add Task",
+                                  style: TextStyle(color: Colors.amber),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

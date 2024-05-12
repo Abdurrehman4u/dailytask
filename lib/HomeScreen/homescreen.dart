@@ -1,7 +1,9 @@
 import 'package:dailytask/Firebase/FirebaseAuthservices.dart';
 import 'package:dailytask/HomeScreen/calender.dart';
 import 'package:dailytask/HomeScreen/create.dart';
+import 'package:dailytask/HomeScreen/fullscreenview.dart';
 import 'package:dailytask/HomeScreen/sampledata.dart';
+import 'package:dailytask/HomeScreen/showSearch.dart';
 import 'package:dailytask/signupsignin/signin.dart';
 import 'package:dailytask/utils/widgets.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class _HomescreenState extends State<Homescreen> {
   int _selectedIndex = 0;
   List<int> completeCount = [];
   List<int> notcompleteCount = [];
+  List<int> indexes = [];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -27,15 +30,20 @@ class _HomescreenState extends State<Homescreen> {
           MaterialPageRoute(builder: (context) => const Createtask()),
         );
       }else if(_selectedIndex == 2){
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) =>   const Calender()),
         );
 
-      }else if(_selectedIndex == 3){
-
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCompletedCount();
+    getNotCompleteCount();
   }
 
   bool isDark = true;
@@ -143,14 +151,11 @@ class _HomescreenState extends State<Homescreen> {
                       return SearchBar(
 
                         controller: controller,
-                        onTap: () {
-                          // controller.openView();
-                        },
-                        onChanged: (_) {
-                          controller.openView();
 
-                        },
-                        leading: const Icon(Icons.search),
+                        leading: IconButton(onPressed: (){
+                          // print(controller.text);
+                          search(controller.text);
+                        },icon: const Icon(Icons.search)),
                         padding: const WidgetStatePropertyAll<EdgeInsets>(
                           EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 8.0), // Add margin
@@ -201,42 +206,45 @@ class _HomescreenState extends State<Homescreen> {
             Container(
                 margin: const EdgeInsets.fromLTRB(20, 30, 0, 10),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    getNotCompleteCount();
+                    getCompletedCount();
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Fullscreenview(isCompleted: true,completedIndex: completeCount,notCompletedIndex: notcompleteCount,)));
+                  },
                   child: const Text(
                     'See all',
                     style: TextStyle(color: Colors.amber),
                   ),
                 ))
           ]),
-          SizedBox(
-            height: 200,
-            child: Builder(builder: (BuildContext context){
-                getCompletedCount();
-              if(completeCount.isEmpty){
-                return const Text("Yet to Complete a task",style: TextStyle(
-                  color: Colors.amber,fontSize: 30,
-                ),);
-              }else{
+          Builder(builder: (BuildContext context){
+              getCompletedCount();
+            if(completeCount.isEmpty){
+              return const Text("Yet to Complete a task",style: TextStyle(
+                color: Colors.amber,fontSize: 30,
+              ),);
+            }
+            else{
 
-                return Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 0
-                    ),
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: completeCount.length,
-                        itemBuilder: (BuildContext context,int index){
-
-                          return completed(context, sampleData.dataCard[completeCount[index]]);
-                        }
-
-                    ),
+              return Expanded(
+                flex: 1,
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0
                   ),
-                );
-              }
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: completeCount.length,
+                      itemBuilder: (BuildContext context,int index){
 
-            }),
-          ),
+                        return completed(context, sampleData.dataCard[completeCount[index]],completeCount[index]);
+                      }
+
+                  ),
+                ),
+              );
+            }
+
+          }),
 
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Container(
@@ -251,7 +259,12 @@ class _HomescreenState extends State<Homescreen> {
             Container(
                 margin: const EdgeInsets.fromLTRB(20, 30, 0, 10),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    getCompletedCount();
+                    getNotCompleteCount();
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Fullscreenview(isCompleted: false,completedIndex: completeCount,notCompletedIndex: notcompleteCount,)));
+
+                  },
                   child: const Text(
                     'See all',
                     style: TextStyle(color: Colors.amber),
@@ -270,9 +283,9 @@ class _HomescreenState extends State<Homescreen> {
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 0
                   ),
                   child: ListView.builder(
-                    itemCount: sampleData.dataCard.length,
+                    itemCount: notcompleteCount.length,
                       itemBuilder: (BuildContext context,int index){
-                        return onGoing(context, sampleData.dataCard[index]);
+                        return onGoing(context, sampleData.dataCard[notcompleteCount[index]],notcompleteCount[index]);
                       }
 
                   ),
@@ -284,7 +297,8 @@ class _HomescreenState extends State<Homescreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        backgroundColor: const Color.fromRGBO(38, 50, 56, 49),
+      items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             backgroundColor: Color.fromRGBO(38, 50, 56, 49),
             icon: Icon(Icons.home_outlined),
@@ -305,14 +319,9 @@ class _HomescreenState extends State<Homescreen> {
             backgroundColor: Color.fromRGBO(38, 50, 56, 49),
             // backgroundColor: Colors.purple,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none_outlined),
-            label: 'notifications',
-            backgroundColor: Color.fromRGBO(38, 50, 56, 49),
-            // backgroundColor: Colors.pink,
-          ),
         ],
         currentIndex: _selectedIndex,
+        unselectedLabelStyle: const TextStyle(color: Colors.white),
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
@@ -320,6 +329,7 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   List<int> getCompletedCount(){
+    completeCount.clear();
     for (var i = 0; i < sampleData.dataCard.length; i++ ){
       if(sampleData.dataCard[i].getPercentage()==100){
         completeCount.add(i);
@@ -329,12 +339,24 @@ class _HomescreenState extends State<Homescreen> {
     return completeCount;
   }
   List<int> getNotCompleteCount(){
+    notcompleteCount.clear();
     for(var i=0;i<sampleData.dataCard.length;i++){
-      if(sampleData.dataCard[i].getPercentage()<100){
+      if(sampleData.dataCard[i].getPercentage()!=100){
         notcompleteCount.add(i);
       }
     }
 
     return notcompleteCount;
+  }
+
+  void search(String s){
+    int l  = sampleData.dataCard.length;
+
+    for(int i=0;i<l;i++){
+      if(sampleData.dataCard[i].Tasksname==s){
+        indexes.add(i);
+      }
+    }
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Showsearch(index: indexes)));
   }
 }
