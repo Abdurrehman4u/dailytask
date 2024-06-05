@@ -2,6 +2,7 @@
 
 By clicking on the link you will be redirected to web build of daily task app  [https://abdurrehman4u.github.io/dailyTaskWebView/]
 it may not display ui properly on web as its fully for mobile only
+<br>
 ![image](https://github.com/Abdurrehman4u/dailytask/assets/108186523/7e8700ef-bf98-4412-9e4d-6b6c6b9dda4a)
 ![image](https://github.com/Abdurrehman4u/dailytask/assets/108186523/873c4c00-a116-4e23-943e-9e45d05a075f)
 ![image](https://github.com/Abdurrehman4u/dailytask/assets/108186523/72b03594-36f5-475c-b1d4-abafae81d923)
